@@ -19,24 +19,23 @@ public class Spawner : MonoBehaviour
         for (int i = 0; i < transform.childCount; i++)
         {
             _points[i] = transform.GetChild(i);
-        }      
+        }
     }
 
     private IEnumerator SpawnEnemy()
     {
+        var waitForSeconds = new WaitForSeconds(2f);
+
         while (_isWorking)
         {
-            yield return new WaitForSeconds(2);
+            yield return waitForSeconds;
 
-            if (_points.Length > _currentPoint)
+            var cloneEnemy = Instantiate(_enemy, _points[_currentPoint].position, transform.rotation);
+            _currentPoint++;
+
+            if (_currentPoint >= _points.Length)
             {
-                var cloneEnemy = Instantiate(_enemy, _points[_currentPoint].position, transform.rotation);
-                _currentPoint++;
-
-                if (_currentPoint >= _points.Length)
-                {
-                    _currentPoint = 0;
-                }                   
+                _currentPoint = 0;
             }
         }
     }
